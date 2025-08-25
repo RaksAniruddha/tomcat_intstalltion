@@ -8,7 +8,7 @@ pipeline {
         }
         stage("install tomcat"){
             steps{
-                ansiblePlaybook credentialsId: 'ansible-user', installation: 'ansible2', inventory: 'inventory.ini', playbook: 'tomcat_install.yml', vaultTmpPath: ''
+                ansiblePlaybook credentialsId: 'ansible_user', installation: 'ansible2', inventory: 'inventory.ini', playbook: 'tomcat_install.yml', vaultTmpPath: ''
             }
         }
         stage('Checkout Code') {
@@ -40,16 +40,17 @@ pipeline {
         sshagent(['ssh']) {
             sh '''
                 # Copy WAR to Tomcat webapps
-                scp -o StrictHostKeyChecking=no target/addressbook.war ubuntu@13.200.137.44:/home/ubuntu/apache-tomcat-9.0.108/webapps/
+                scp -o StrictHostKeyChecking=no target/addressbook.war ubuntu@3.110.236.99:/home/ubuntu/apache-tomcat-9.0.108/webapps/
                 
                 # Restart Tomcat
-                ssh -o StrictHostKeyChecking=no ubuntu@13.200.137.44 "cd /home/ubuntu/apache-tomcat-9.0.108/bin && ./shutdown.sh || true && ./startup.sh"
+                ssh -o StrictHostKeyChecking=no ubuntu@3.110.236.99 "cd /home/ubuntu/apache-tomcat-9.0.108/bin && ./shutdown.sh || true && ./startup.sh"
             '''
         }
     }
 }
     }
 }
+
 
 
 
