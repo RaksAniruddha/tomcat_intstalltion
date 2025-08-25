@@ -40,14 +40,15 @@ pipeline {
         sshagent(['ssh']) {
             sh '''
                 # Copy WAR to Tomcat webapps
-                scp -o StrictHostKeyChecking=no target/addressbook.war ubuntu@13.200.137.44:/home/ubuntu/apache-tomcat-9.0.108/webapps/
+                scp -o StrictHostKeyChecking=no target/addressbook.war ubuntu@13.200.137.44: /home/ubuntu/apache-tomcat-9.0.108/webapps/
                 
                 # Restart Tomcat
-                ssh -o StrictHostKeyChecking=no ubuntu@13.200.137.44"cd /home/ubuntu/apache-tomcat-9.0.108/bin && ./shutdown.sh || true && ./startup.sh"
+                ssh -o StrictHostKeyChecking=no ubuntu@13.200.137.44  "cd /home/ubuntu/apache-tomcat-9.0.108/bin && ./shutdown.sh || true && ./startup.sh"
             '''
         }
     }
 }
     }
 }
+
 
