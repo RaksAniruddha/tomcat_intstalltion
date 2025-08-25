@@ -4,6 +4,11 @@
   become: yes
 
   tasks:
+    - name: Update package cache and install OpenJDK 11
+      apt:
+        name: openjdk-11-jdk
+        state: present
+        update_cache: yes
     - name: tomact installation
       ansible.builtin.get_url:
         url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.108/bin/apache-tomcat-9.0.108.zip
