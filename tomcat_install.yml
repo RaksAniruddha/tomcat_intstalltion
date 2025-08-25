@@ -1,0 +1,32 @@
+---
+- name: assignment2 question4
+  hosts: ansiblegroup
+  become: yes
+
+  tasks:
+    - name: tomact installation
+      ansible.builtin.get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.108/bin/apache-tomcat-9.0.108.zip
+        dest: /home/ubuntu/
+    - name: Install unzip
+      become: yes
+      ansible.builtin.package:
+        name: unzip
+        state: present
+    - name: unzip the packehe
+      ansible.builtin.unarchive:
+        src: /home/ubuntu/apache-tomcat-9.0.108.zip
+        dest: /home/ubuntu/
+        remote_src: yes
+    - name: Find all Tomcat shell scripts on remote node
+      ansible.builtin.find:
+        paths: /home/ubuntu/apache-tomcat-9.0.108/bin
+        patterns: "*.sh"
+        recurse: no      # set to yes if you want to include subfolders
+      register: sh_scripts
+    - name: Make all Tomcat shell scripts executable
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        mode: '0755'
+        state: file
+      loop: "{{ sh_scripts.files }}"
